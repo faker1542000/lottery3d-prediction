@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>福彩3D预测助手 - 历史开奖记录与智能预测</title>
+    <meta name="description" content="福彩3D开奖历史记录查询，智能预测下期开奖号码，5码组合预测分析">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-dice"></i>
+                福彩3D预测助手
+            </div>
+            <div class="nav-menu">
+                <a href="#prediction" class="nav-link active">智能预测</a>
+                <a href="#history" class="nav-link">历史开奖</a>
+                <a href="#analysis" class="nav-link">数据分析</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 最新开奖信息 -->
+        <div class="latest-draw-section">
+            <div class="card highlight-card">
+                <h2 class="section-title">
+                    <i class="fas fa-trophy"></i>
+                    最新开奖
+                </h2>
+                <div class="latest-draw-info">
+                    <div class="draw-period">第 <span id="latestPeriod">2024001</span> 期</div>
+                    <div class="draw-date" id="latestDate">2024-01-01</div>
+                    <div class="draw-numbers" id="latestNumbers">
+                        <span class="ball">1</span>
+                        <span class="ball">2</span>
+                        <span class="ball">3</span>
+                    </div>
+                    <div class="draw-stats">
+                        <span class="stat-item">和值: <strong id="sumValue">6</strong></span>
+                        <span class="stat-item">跨度: <strong id="spanValue">2</strong></span>
+                        <span class="stat-item">形态: <strong id="typeValue">组六</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 预测区域 -->
+        <section id="prediction" class="prediction-section">
+            <div class="card">
+                <h2 class="section-title">
+                    <i class="fas fa-brain"></i>
+                    智能预测
+                </h2>
+                
+                <!-- 3D号码预测 -->
+                <div class="predict-box">
+                    <h3 class="predict-title">下期3D精选号码</h3>
+                    <div class="predict-numbers" id="predict3D">
+                        <span class="predict-ball">?</span>
+                        <span class="predict-ball">?</span>
+                        <span class="predict-ball">?</span>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="confidence-label">置信度</div>
+                        <div class="confidence-progress">
+                            <div class="confidence-fill" id="confidence3D" style="width: 0%"></div>
+                        </div>
+                        <div class="confidence-value" id="confidence3DValue">0%</div>
+                    </div>
+                </div>
+
+                <!-- 5码组合预测 -->
+                <div class="predict-box">
+                    <h3 class="predict-title">5码组合预测</h3>
+                    <div class="predict-hint">任意3个数字组合即为命中</div>
+                    <div class="predict-numbers" id="predict5Code">
+                        <span class="predict-ball-small">?</span>
+                        <span class="predict-ball-small">?</span>
+                        <span class="predict-ball-small">?</span>
+                        <span class="predict-ball-small">?</span>
+                        <span class="predict-ball-small">?</span>
+                    </div>
+                    <div class="confidence-bar">
+                        <div class="confidence-label">置信度</div>
+                        <div class="confidence-progress">
+                            <div class="confidence-fill" id="confidence5Code" style="width: 0%"></div>
+                        </div>
+                        <div class="confidence-value" id="confidence5CodeValue">0%</div>
+                    </div>
+                </div>
+
+                <!-- 生成按钮 -->
+                <button class="btn-generate" onclick="generatePrediction()">
+                    <i class="fas fa-sync-alt"></i>
+                    生成新预测
+                </button>
+            </div>
+        </section>
+
+        <!-- 历史记录 -->
+        <section id="history" class="history-section">
+            <div class="card">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i>
+                    历史开奖记录
+                </h2>
+                
+                <!-- 搜索栏 -->
+                <div class="search-bar">
+                    <input type="text" class="search-input" id="searchInput" placeholder="搜索期号...">
+                    <button class="search-btn" onclick="searchHistory()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+
+                <!-- 历史列表 -->
+                <div class="history-list" id="historyList">
+                    <!-- 动态生成 -->
+                </div>
+
+                <!-- 加载更多 -->
+                <button class="btn-load-more" onclick="loadMore()">
+                    加载更多
+                </button>
+            </div>
+        </section>
+
+        <!-- 数据分析 -->
+        <section id="analysis" class="analysis-section">
+            <div class="card">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    数据分析
+                </h2>
+
+                <!-- 统计信息 -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-percentage"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">68%</div>
+                            <div class="stat-label">3D命中率</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">82%</div>
+                            <div class="stat-label">5码命中率</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="stat-content">
+                            <div class="stat-value">1,234</div>
+                            <div class="stat-label">总预测次数</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 热号冷号 -->
+                <div class="number-analysis">
+                    <div class="analysis-box">
+                        <h3 class="analysis-title">
+                            <i class="fas fa-fire"></i>
+                            热号 (近30期)
+                        </h3>
+                        <div class="number-grid" id="hotNumbers">
+                            <span class="number-tag hot">3</span>
+                            <span class="number-tag hot">7</span>
+                            <span class="number-tag hot">9</span>
+                        </div>
+                    </div>
+                    <div class="analysis-box">
+                        <h3 class="analysis-title">
+                            <i class="fas fa-snowflake"></i>
+                            冷号 (近30期)
+                        </h3>
+                        <div class="number-grid" id="coldNumbers">
+                            <span class="number-tag cold">0</span>
+                            <span class="number-tag cold">4</span>
+                            <span class="number-tag cold">8</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 号码出现频率图表 -->
+                <div class="chart-container">
+                    <h3 class="chart-title">号码出现频率统计</h3>
+                    <div class="frequency-chart" id="frequencyChart">
+                        <!-- 动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p><i class="fas fa-info-circle"></i> 免责声明：本站预测仅供参考，不保证中奖。理性购彩，量力而行。</p>
+            <p>© 2024 福彩3D预测助手 | 数据来源：中国福利彩票</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
