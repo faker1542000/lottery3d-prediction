@@ -2,14 +2,19 @@ name: 自动获取福彩3D数据
 
 on:
   schedule:
-    # 每天北京时间 21:30 运行（UTC时间13:30）
     - cron: '30 13 * * *'
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:
   push:
     branches: [ main ]
     paths:
       - 'scraper.py'
       - '.github/workflows/scraper.yml'
+
+# 添加权限配置
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
   scrape:
@@ -19,7 +24,8 @@ jobs:
     - name: 检出代码
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        persist-credentials: true
+        fetch-depth: 0
     
     - name: 设置 Python
       uses: actions/setup-python@v4
@@ -43,9 +49,21 @@ jobs:
       run: |
         python scraper.py
     
-    - name: 提交更新
+    - name: 检查文件变化
+      id: verify
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        if [ -f "data/lottery_data.json" ]; then
+          echo "数据文件已生成"
+          echo "has_data=true" >> $GITHUB_OUTPUT
+        else
+          echo "数据文件未生成"
+          echo "has_data=false" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: 提交更新
+      if: steps.verify.outputs.has_data == 'true'
+      run: |
+        git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions[bot]"
         git add data/
         git diff --quiet && git diff --staged --quiet || (git commit -m "🔄 自动更新彩票数据 $(date +'%Y-%m-%d %H:%M:%S')" && git push)
