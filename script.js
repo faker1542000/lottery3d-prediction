@@ -291,3 +291,21 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         this.classList.add('active');
     });
 });
+
+// 在 script.js 中添加
+async function fetchRealData() {
+    try {
+        // 使用 CORS 代理
+        const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+        const targetUrl = 'https://www.zhcw.com/kjxx/3d/';
+        
+        const response = await fetch(proxyUrl + targetUrl);
+        const html = await response.text();
+        
+        // 解析 HTML 获取数据
+        // 这里需要根据实际页面结构解析
+        
+    } catch (error) {
+        console.error('获取数据失败:', error);
+    }
+}
